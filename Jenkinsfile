@@ -5,31 +5,31 @@ pipeline {
         stage('Deploy NTS') {
             steps {
                 echo 'Deploying NTS...'
-		sleep '5s'
+		sh 'sleep 5'
             }
         }
         stage('Deploy Neoload Web') {
             steps {
                 echo 'Deploying Neoload Web...'
-		sleep '5s'
+		sh 'sleep 5'
             }
         }
         stage('Deploy Neoload Controller') {
             steps {
                 echo 'Deploying Neoload Controller...'
-		sleep '5s'
+		sh 'sleep 5'
             }
         }
 	stage('Launching Test') {
             steps {
                 echo 'Launching test...'
-                sleep '5s'
+                sh 'sleep 5'
             }
         }
 	stage('Shut Down Neoload Controller') {
             steps {
                 echo 'Shuting Down Neoload Controller...'
-                sleep '5s'
+                sh 'sleep 5'
             }
         }
 
