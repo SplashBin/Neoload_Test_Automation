@@ -2,20 +2,36 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Deploy NTS') {
             steps {
-                echo 'Building..'
+                echo 'Deploying NTS...'
+		sleep '5s'
             }
         }
-        stage('Test') {
+        stage('Deploy Neoload Web') {
             steps {
-                echo 'Testing..'
+                echo 'Deploying Neoload Web...'
+		sleep '5s'
             }
         }
-        stage('Deploy') {
+        stage('Deploy Neoload Controller') {
             steps {
-                echo 'Deploying....'
+                echo 'Deploying Neoload Controller...'
+		sleep '5s'
             }
         }
+	stage('Launching Test') {
+            steps {
+                echo 'Launching test...'
+                sleep '5s'
+            }
+        }
+	stage('Shut Down Neoload Controller') {
+            steps {
+                echo 'Shuting Down Neoload Controller...'
+                sleep '5s'
+            }
+        }
+
     }
 }
