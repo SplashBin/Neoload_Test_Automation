@@ -37,13 +37,15 @@ pipeline {
             }
 
             stage('Deploy neoload-frontend...') {
-              sh 'sleep 20'
-              sh 'docker run -e MEMORY_MAX=896m \
-                      -e SEND_USAGE_STATISTICS=true \
-                      --link nlweb-backend \
-                      -t true \
-                      -i true \
-                      --name nlweb-frontend neotys/neoload-web-frontend:latest & jobs'
+              steps {
+                sh 'sleep 20'
+                sh 'docker run -e MEMORY_MAX=896m \
+                        -e SEND_USAGE_STATISTICS=true \
+                        --link nlweb-backend \
+                        -t true \
+                        -i true \
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest & jobs'
+              }
             }
           }
         }
