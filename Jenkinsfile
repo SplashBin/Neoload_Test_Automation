@@ -14,12 +14,8 @@ pipeline {
                 stage('Deploying mongo...') {
                     agent {
                       docker {
-                          image 'mongo:3.4.13'
-                          args '--hostname mongo \
-                                -v /home/bench/data:/data/db \
-                                -t true \
-                                -i true \
-                                --name mongo'
+                          image 'mongo:latest'
+                          args '-t -i -v /home/bench/data:/data/db --name mongo -h mongo'
                       }
                     }
                     steps {
@@ -43,7 +39,7 @@ pipeline {
                                   -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                                   -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                                   --link mongo \
-                                  -t true \
+                                  -t \
                                   -i true \
                                   --name nlweb-backend'
                         }
