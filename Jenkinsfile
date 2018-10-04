@@ -43,6 +43,8 @@ pipeline {
                 sh 'sleep 120'
                 sh 'docker run -d -e MEMORY_MAX=896m \
                         -e SEND_USAGE_STATISTICS=true \
+                        --publish 80:9090 \
+                        --publish 81:9091 \
                         --link nlweb-backend \
                         --interactive \
                         --name nlweb-frontend neotys/neoload-web-frontend:latest'
