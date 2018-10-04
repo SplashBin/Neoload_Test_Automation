@@ -20,14 +20,12 @@ pipeline {
                     }
                     steps {
                       echo 'mongo deployed !'
+                      sh 'sleep 5'
                     }
                 }
 
                 stage('Deploying nl backend...') {
                     agent {
-                        steps {
-                          sh 'sleep 5'
-                        }
                         docker {
                             image 'neotys/neoload-web-backend:latest'
                             args '-t -i -p 8080:1081 \
