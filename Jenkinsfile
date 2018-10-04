@@ -10,7 +10,6 @@ pipeline {
         }
 
         stage('Deploy Nl Web') {
-          steps {
             parallel {
                 stage('Deploying mongo...') {
                     agent {
@@ -62,7 +61,6 @@ pipeline {
                     }
                 }
             }
-          }
         }
 
         stage('Deploy Nl Controller') {
