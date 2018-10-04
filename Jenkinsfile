@@ -27,7 +27,7 @@ pipeline {
                     agent {
                         docker {
                             image 'neotys/neoload-web-backend:latest'
-                            args '-p 8080:1081 \
+                            args '-t -i -p 8080:1081 \
                                   -p 8081:1082 \
                                   -p 9082:9092 \
                                   -e MEMORY_MAX=1500m \
@@ -39,8 +39,6 @@ pipeline {
                                   -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                                   -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                                   --link mongo \
-                                  -t \
-                                  -i true \
                                   --name nlweb-backend'
                         }
                     }
