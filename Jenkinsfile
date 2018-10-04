@@ -13,11 +13,10 @@ pipeline {
           agent {
             docker {
               image 'mongo:latest'
-              args '-t true \
-                    -i mongo \
+              args '-i true \
                     -v /home/bench/data:/data/db \
                     --name mongo \
-                    -h mongo'
+                    -h mongo -t'
             }
           }
           steps {
@@ -29,7 +28,7 @@ pipeline {
           agent {
             docker {
               image 'neotys/neoload-web-backend:latest'
-              args '-i true -t neotys/neoload-web-backend -p 8080:1081 \
+              args '-i true -p 8080:1081 \
                     -p 8081:1082 \
                     -p 9082:9092 \
                     -e MEMORY_MAX=1500m \
@@ -41,7 +40,7 @@ pipeline {
                     -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                     -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                     --link mongo \
-                    --name nlweb-backend'
+                    --name nlweb-backend -t'
             }
           }
           steps {
