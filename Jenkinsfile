@@ -25,6 +25,9 @@ pipeline {
 
                 stage('Deploying nl backend...') {
                     agent {
+                        steps {
+                            sh 'sleep 5'
+                        }
                         docker {
                             image 'neotys/neoload-web-backend:latest'
                             args '-p 8080:1081 \
@@ -43,9 +46,6 @@ pipeline {
                                   -i true \
                                   --name nlweb-backend'
                         }
-                    }
-                    steps {
-                      echo 'nl backend deployed !'
                     }
                 }
 
