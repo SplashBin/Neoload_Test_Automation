@@ -21,6 +21,7 @@ pipeline {
           }
           steps {
             echo 'Mongo deployed !'
+            sh 'docker ps'
             sh 'sleep 5'
           }
         }
