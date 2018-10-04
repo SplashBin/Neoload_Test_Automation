@@ -13,7 +13,8 @@ pipeline {
           parallel {
             stage('Deploy mongo...') {
               steps {
-                sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest & jobs'
+                sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname --tty mongo mongo:latest'
+                echo 'Mongo deployed !'
               }
             }
 
@@ -32,7 +33,8 @@ pipeline {
                       --env FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
-                      --name nlweb-backend neotys/neoload-web-backend:latest & jobs'
+                      --name nlweb-backend --tty neotys/neoload-web-backend:latest'
+                echo 'Neoload-backend deployed !'
               }
             }
 
@@ -44,7 +46,8 @@ pipeline {
                         --link nlweb-backend \
                         -t true \
                         -i true \
-                        --name nlweb-frontend neotys/neoload-web-frontend:latest & jobs'
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest'
+                echo 'Neoload-frontend deployed !'
               }
             }
           }
