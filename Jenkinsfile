@@ -19,6 +19,8 @@ pipeline {
                           --stdin_open true'
                     label 'mongo'
                 }
+            }
+            agent {
                 docker {
                     image 'neotys/neoload-web-backend:latest'
                     args '-p 8080:1081 \
@@ -37,6 +39,8 @@ pipeline {
                           --stdin_open true'
                     label 'nlweb-backend'
                 }
+            }
+            agent {
                 docker {
                     image 'neotys/neoload-web-frontend:latest'
                     args'-e MEMORY_MAX=896m \
