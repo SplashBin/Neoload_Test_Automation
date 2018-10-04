@@ -18,8 +18,8 @@ pipeline {
                           args '--hostname mongo \
                                 -v /home/bench/data:/data/db \
                                 --tty true \
-                                --stdin_open true'
-                          label 'mongo'
+                                --stdin_open true \
+                                --container_name mongo'
                       }
                     }
                     steps {
@@ -44,8 +44,8 @@ pipeline {
                                   -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                                   --links mongo \
                                   --tty true \
-                                  --stdin_open true'
-                            label 'nlweb-backend'
+                                  --stdin_open true \
+                                  --container_name nlweb-backend'
                         }
                     }
                     steps {
@@ -61,8 +61,8 @@ pipeline {
                                  -e SEND_USAGE_STATISTICS=true \
                                  --links nlweb-backend \
                                  --tty true \
-                                 --stdin_open true'
-                            label 'nlweb-frontend'
+                                 --stdin_open true \
+                                 --container_name nlweb-frontend'
                         }
                     }
                     steps {
