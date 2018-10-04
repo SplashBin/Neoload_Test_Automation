@@ -21,8 +21,6 @@ pipeline {
           }
           steps {
             echo 'Mongo deployed !'
-            sh 'docker ps'
-            sh 'sleep 5'
           }
         }
 
@@ -41,7 +39,6 @@ pipeline {
                     -e FILE_STORAGE_ROUTER_BASE_URL=http://neoload.yourcompany.com:8081 \
                     -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                     -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
-                    --link mongo \
                     --name nlweb-backend'
             }
           }
