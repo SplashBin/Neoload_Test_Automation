@@ -17,9 +17,9 @@ pipeline {
                           image 'mongo:3.4.13'
                           args '--hostname mongo \
                                 -v /home/bench/data:/data/db \
-                                --tty true \
-                                --stdin_open true \
-                                --container_name mongo'
+                                -t true \
+                                -i true \
+                                --name mongo'
                       }
                     }
                     steps {
@@ -42,10 +42,10 @@ pipeline {
                                   -e FILE_STORAGE_ROUTER_BASE_URL=http://neoload.yourcompany.com:8081 \
                                   -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                                   -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
-                                  --links mongo \
-                                  --tty true \
-                                  --stdin_open true \
-                                  --container_name nlweb-backend'
+                                  --link mongo \
+                                  -t true \
+                                  -i true \
+                                  --name nlweb-backend'
                         }
                     }
                     steps {
@@ -59,10 +59,10 @@ pipeline {
                             image 'neotys/neoload-web-frontend:latest'
                             args'-e MEMORY_MAX=896m \
                                  -e SEND_USAGE_STATISTICS=true \
-                                 --links nlweb-backend \
-                                 --tty true \
-                                 --stdin_open true \
-                                 --container_name nlweb-frontend'
+                                 --link nlweb-backend \
+                                 -t true \
+                                 -i true \
+                                 --name nlweb-frontend'
                         }
                     }
                     steps {
