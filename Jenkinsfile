@@ -10,7 +10,7 @@ pipeline {
         }
 
         stage('Deploy Nl Web') {
-            steps {
+            agent {
                 docker {
                     image 'mongo:3.4.13'
                     args '--hostname mongo \
