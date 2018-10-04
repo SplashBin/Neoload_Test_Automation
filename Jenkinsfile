@@ -39,6 +39,15 @@ pipeline {
                     --link mongo \
                     --name nlweb-backend -t'
             }
+            docker {
+              image 'neotys/neoload-web-frontend:latest'
+              args '-e MEMORY_MAX=896m \
+                    -e SEND_USAGE_STATISTICS=true \
+                    --link nlweb-backend \
+                    -t true \
+                    -i true \
+                    --name nlweb-frontend'
+            }
           }
           steps {
             echo 'Nlweb Backend deployed !'
