@@ -10,17 +10,20 @@ pipeline {
         }
 
         stage('Deploy Nl Web') {
-          agents {
-              agent {
-                  docker {
-                      image 'mongo:3.4.13'
-                      args '--hostname mongo \
-                            -v /home/bench/data:/data/db \
-                            --tty true \
-                            --stdin_open true'
-                      label 'mongo'
-                  }
-              }
+          steps {
+            step {
+                agent {
+                    docker {
+                        image 'mongo:3.4.13'
+                        args '--hostname mongo \
+                              -v /home/bench/data:/data/db \
+                              --tty true \
+                              --stdin_open true'
+                        label 'mongo'
+                    }
+                }
+            }
+            step { 
               agent {
                   docker {
                       image 'neotys/neoload-web-backend:latest'
@@ -41,6 +44,8 @@ pipeline {
                       label 'nlweb-backend'
                   }
               }
+            }
+            step {
               agent {
                   docker {
                       image 'neotys/neoload-web-frontend:latest'
@@ -52,6 +57,7 @@ pipeline {
                       label 'nlweb-frontend'
                   }
               }
+            }
           }
         }
 
