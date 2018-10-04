@@ -11,9 +11,9 @@ pipeline {
 
         stage('Deploy Nl Web') {
           steps {
-            sh 'docker run -t -i -v /home/bench/data:/data/db --name mongo -h mongo mongo:latest'
+            sh 'docker run -t -v /home/bench/data:/data/db --name mongo -h mongo mongo:latest'
             sh 'sleep 5'
-            sh 'docker run -t -i -p 8080:1081 \
+            sh 'docker run -t -p 8080:1081 \
                                   -p 8081:1082 \
                                   -p 9082:9092 \
                                   -e MEMORY_MAX=1500m \
