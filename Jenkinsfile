@@ -11,9 +11,9 @@ pipeline {
 
         stage('Deploy Nl Web') {
           steps {
-            docker '-t -i -v /home/bench/data:/data/db --name mongo -h mongo mongo:latest'
+            sh 'docker run -t -i -v /home/bench/data:/data/db --name mongo -h mongo mongo:latest'
             sh 'sleep 5'
-            docker '-t -i -p 8080:1081 \
+            sh 'docker run -t -i -p 8080:1081 \
                                   -p 8081:1082 \
                                   -p 9082:9092 \
                                   -e MEMORY_MAX=1500m \
@@ -27,7 +27,7 @@ pipeline {
                                   --link mongo \
                                   --name nlweb-backend neotys/neoload-web-backend:latest'
             sh 'sleep 5'
-            docker '-e MEMORY_MAX=896m \
+            sh 'docker run -e MEMORY_MAX=896m \
                                  -e SEND_USAGE_STATISTICS=true \
                                  --link nlweb-backend \
                                  -t true \
