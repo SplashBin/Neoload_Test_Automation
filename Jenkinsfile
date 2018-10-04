@@ -10,25 +10,10 @@ pipeline {
         }
 
         stage('Deploy Nl Web') {
-            parallel {
-                stage('Deploying mongo...') {
-                    agent {
-                      docker {
-                          image 'mongo:latest'
-                          args '-t -i -v /home/bench/data:/data/db --name mongo -h mongo'
-                      }
-                    }
-                    steps {
-                      echo 'mongo deployed !'
-                      sh 'sleep 5'
-                    }
-                }
-
-                stage('Deploying nl backend...') {
-                    agent {
-                        docker {
-                            image 'neotys/neoload-web-backend:latest'
-                            args '-t -i -p 8080:1081 \
+          steps {
+            docker '-t -i -v /home/bench/data:/data/db --name mongo -h mongo mongo:latest'
+            sh 'sleep 5'
+            docker '-t -i -p 8080:1081 \
                                   -p 8081:1082 \
                                   -p 9082:9092 \
                                   -e MEMORY_MAX=1500m \
@@ -40,31 +25,16 @@ pipeline {
                                   -e FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                                   -e NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                                   --link mongo \
-                                  --name nlweb-backend'
-                        }
-                    }
-                    steps {
-                      echo 'nl backend deployed !'
-                    }
-                }
-
-                stage('Deploying nl frontend...') {
-                    agent {
-                        docker {
-                            image 'neotys/neoload-web-frontend:latest'
-                            args'-e MEMORY_MAX=896m \
+                                  --name nlweb-backend neotys/neoload-web-backend:latest'
+            sh 'sleep 5'
+            docker '-e MEMORY_MAX=896m \
                                  -e SEND_USAGE_STATISTICS=true \
                                  --link nlweb-backend \
                                  -t true \
                                  -i true \
-                                 --name nlweb-frontend'
-                        }
-                    }
-                    steps {
-                      echo 'nl frontend deployed !'
-                    }
-                }
-            }
+                                 --name nlweb-frontend neotys/neoload-web-frontend:latest'
+          }
+            
         }
 
         stage('Deploy Nl Controller') {
@@ -74,4 +44,3 @@ pipeline {
         }
     }
 }
-
