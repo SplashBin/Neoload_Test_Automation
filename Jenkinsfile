@@ -16,7 +16,7 @@ pipeline {
               args '-i mongo \
                     -v /home/bench/data:/data/db \
                     --name mongo \
-                    -h mongo -t'
+                    -h mongo'
             }
           }
           steps {
