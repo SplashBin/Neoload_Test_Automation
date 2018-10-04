@@ -22,6 +22,9 @@ pipeline {
                           label 'mongo'
                       }
                     }
+                    steps {
+                      echo 'mongo deployed !'
+                    }
                 }
 
                 stage('Deploying nl backend...') {
@@ -45,9 +48,12 @@ pipeline {
                             label 'nlweb-backend'
                         }
                     }
+                    steps {
+                      echo 'nl backend deployed !'
+                    }
                 }
 
-                stage('Deploying nl frontend') {
+                stage('Deploying nl frontend...') {
                     agent {
                         docker {
                             image 'neotys/neoload-web-frontend:latest'
@@ -58,6 +64,9 @@ pipeline {
                                  --stdin_open true'
                             label 'nlweb-frontend'
                         }
+                    }
+                    steps {
+                      echo 'nl frontend deployed !'
                     }
                 }
             }
