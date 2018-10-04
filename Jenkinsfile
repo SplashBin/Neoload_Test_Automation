@@ -11,7 +11,7 @@ pipeline {
 
         stage('Deploy mongo...') {
           steps {
-            sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest'
+            sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest & jobs'
           }
         }
 
