@@ -13,8 +13,8 @@ pipeline {
           agent {
             docker {
               image 'mongo:latest'
-              args '-t mongo \
-                    -i true \
+              args '-t true \
+                    -i mongo \
                     -v /home/bench/data:/data/db \
                     --name mongo \
                     -h mongo'
