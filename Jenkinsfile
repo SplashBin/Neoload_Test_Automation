@@ -2,18 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploy Neoload Team Server...') {
-          steps {
-            sh "curl https://d24mnm5myvorwj.cloudfront.net/documents/download/nts/v2.3/neotys_team_server_2_3_1_linux_x86.sh > nts_installer.sh"
-            sh "echo -e 'adminPort$Long=8009\nhttpPort$Long=8084\nlicensePort$Long=7777\nshutdownPort$Long=8005\nsys.adminRights$Boolean=true\nsys.installationDir=./data/NTS2.3.1\nsys.languageId=en\nsys.programGroupDisabled$Boolean=true' > vfile"
-            sh "sh nts_installer.sh -q -varfile vfile"
-          }
-        }
-        stage('[ Tmp ] Download script and licences...') {
+        stage('Download script and licences...') {
             steps {
                 sh 'git clone https://github.com/SplashBin/Continuous_Testing.git'
-                sh 'tar -xvf Apollo_PPRD.tar.gz'   
             }
+        }
+
+        stage('Creating NTS Docker Image...') {
+          steps {
+            sh "docker build --file Continuous_Testing/NTS_Server.dockerfile -t nts_server ."
+            sh "docker run -it -d -p 8084:8080 -p 7777:7777 -p 8005:8005 -p 8009:8009 --tty nts_server"
+          }
         }
 
         stage('Deploy Nl Web') {
@@ -61,6 +60,7 @@ pipeline {
             }
           }
         }
+
         stage('Deploy Nl Controller') {
             steps {
                 echo 'Testing..'
