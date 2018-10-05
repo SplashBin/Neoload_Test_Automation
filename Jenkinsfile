@@ -5,7 +5,7 @@ pipeline {
         stage('Download script and licences...') {
             steps {
                 sh 'rm -rf Continuous_Testing'
-                sh 'git pull https://github.com/SplashBin/Continuous_Testing.git'
+                sh 'git clone https://github.com/SplashBin/Continuous_Testing.git'
             }
         }
 
