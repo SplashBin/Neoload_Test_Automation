@@ -2,10 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploy NTS') {
+        stage('Deploy Neoload Team Server...') {
+          steps {
+            sh "curl https://d24mnm5myvorwj.cloudfront.net/documents/download/nts/v2.3/neotys_team_server_2_3_1_linux_x86.sh > nts_installer.sh"
+            sh "echo -e 'adminPort$Long=8009\nhttpPort$Long=8084\nlicensePort$Long=7777\nshutdownPort$Long=8005\nsys.adminRights$Boolean=true\nsys.installationDir=/data/NTS2.3.1\nsys.languageId=en\nsys.programGroupDisabled$Boolean=true' > vfile"
+            sh "sh nts_installer.sh -q -varfile vfile"
+          }
+        }
+        stage('[ Tmp ] Download script and licences...') {
             steps {
-                echo 'Deploying NTS'
-                sh 'sleep 5'
+                sh 'git clone https://github.com/SplashBin/Continuous_Testing.git'
+                sh 'tar -xvf Apollo_PPRD.tar.gz'   
             }
         }
 
@@ -48,6 +55,7 @@ pipeline {
                         --link nlweb-backend \
                         --interactive \
                         --name nlweb-frontend neotys/neoload-web-frontend:latest'
+                sh 'sleep 60'
                 echo 'Neoload-frontend deployed !'
               }
             }
