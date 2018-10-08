@@ -2,6 +2,6 @@
 TEST=
 while $(test "$TEST" = "")
 do
-  TEST=$(cat mongo.out | grep Started)
+  TEST=$(cat mongo.out | grep MongoDB starting)
   sleep 1
 done
