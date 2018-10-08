@@ -20,15 +20,14 @@ pipeline {
           parallel {
             stage('Deploy mongo...') {
               steps {
-                sh 'docker run --tty --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest'
+                sh 'docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest'
                 echo 'Mongo deployed !'
               }
             }
 
             stage('Deploy neoload-backend...') {
               steps {
-                sh 'sleep 10'
-                sh 'docker run --tty --interactive -p 8080:1081 \
+                sh 'docker run --interactive --interactive -p 8080:1081 \
                       --publish 8081:1082 \
                       --publish 9082:9092 \
                       --env MEMORY_MAX=1500m \
@@ -47,8 +46,7 @@ pipeline {
 
             stage('Deploy neoload-frontend...') {
               steps {
-                sh 'sleep 30'
-                sh 'docker run --tty -e MEMORY_MAX=896m \
+                sh 'docker run --interactive -e MEMORY_MAX=896m \
                         -e SEND_USAGE_STATISTICS=true \
                         --publish 80:9090 \
                         --publish 81:9091 \
