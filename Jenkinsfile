@@ -5,7 +5,9 @@ pipeline {
         stage('Download script and licences...') {
             steps {
                 sh 'rm -rf Continuous_Testing'
+                sh 'rm -rf Neoload_Test_Automation'
                 sh 'git clone https://github.com/SplashBin/Continuous_Testing.git'
+                sh 'git clone https://github.com/SplashBin/Neoload_Test_Automation.git'
             }
         }
 
@@ -21,8 +23,7 @@ pipeline {
             stage('Deploy mongo...') {
               steps {
                 sh 'nohup docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
-                sh '"TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat mongo.out | grep Started)\n sleep 1\ndone" > test_mongo'
-                sh 'sh test_mongo'
+                sh 'sh Continuous_Testing/test_mongo'
                 echo "Mongo succesfully deployed !"
 
               }
@@ -43,8 +44,7 @@ pipeline {
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
                       --name nlweb-backend neotys/neoload-web-backend:latest &> backend.out & jobs'
-                sh '"TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat backend.out | grep Started)\n sleep 1\ndone" > test_backend'
-                sh 'sh test_backend'
+                sh 'sh Continuous_Testing/test_backend'
                 echo "Neoload-backend succesfully deployed !"
               }
             }
@@ -59,7 +59,7 @@ pipeline {
                         --interactive \
                         --name nlweb-frontend neotys/neoload-web-frontend:latest &> frontend.out & jobs'
                 sh '"TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat frontend.out | grep Started)\n sleep 1\ndone" > test_frontend'
-                sh 'sh test_frontend'
+                sh 'sh Continuous_Testing/test_frontend'
                 echo "Neoload-frontend succesfully deployed !"
               }
             }

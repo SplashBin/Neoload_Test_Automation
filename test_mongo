@@ -1,0 +1,6 @@
+TEST=
+while $(test "$TEST" = "")
+do
+  TEST=$(cat mongo.out | grep Started)
+  sleep 1
+done
