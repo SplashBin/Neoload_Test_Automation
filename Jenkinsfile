@@ -22,7 +22,7 @@ pipeline {
           parallel {
             stage('Deploy mongo...') {
               steps {
-                sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
+                sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest > mongo.out & jobs'
                 sh 'cat Neoload_Test_Automation/test_mongo'
                 sh 'cat mongo.out'
                 sh 'sh Neoload_Test_Automation/test_mongo'
@@ -45,7 +45,7 @@ pipeline {
                       --env FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
-                      --name nlweb-backend neotys/neoload-web-backend:latest &> backend.out & jobs'
+                      --name nlweb-backend neotys/neoload-web-backend:latest > backend.out & jobs'
                 sh 'cat Neoload_Test_Automation/test_backend'
                 sh 'sh Neoload_Test_Automation/test_backend'
                 echo "Neoload-backend succesfully deployed !"
@@ -60,7 +60,7 @@ pipeline {
                         --publish 81:9091 \
                         --link nlweb-backend \
                         --interactive \
-                        --name nlweb-frontend neotys/neoload-web-frontend:latest &> frontend.out & jobs'
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest > frontend.out & jobs'
                 sh 'cat Neoload_Test_Automation/test_frontend'
                 sh 'sh Neoload_Test_Automation/test_frontend'
                 echo "Neoload-frontend succesfully deployed !"
