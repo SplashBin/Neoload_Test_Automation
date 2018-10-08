@@ -24,6 +24,7 @@ pipeline {
               steps {
                 sh 'nohup docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
                 sh 'cat Neoload_Test_Automation/test_mongo'
+                sh 'cat mongo.out'
                 sh 'sh Neoload_Test_Automation/test_mongo'
                 echo "Mongo succesfully deployed !"
 
