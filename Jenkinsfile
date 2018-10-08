@@ -23,6 +23,7 @@ pipeline {
             stage('Deploy mongo...') {
               steps {
                 sh 'nohup docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
+                sh 'cat Neoload_Test_Automation/test_mongo'
                 sh 'sh Neoload_Test_Automation/test_mongo'
                 echo "Mongo succesfully deployed !"
 
@@ -44,6 +45,7 @@ pipeline {
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
                       --name nlweb-backend neotys/neoload-web-backend:latest &> backend.out & jobs'
+                sh 'cat Neoload_Test_Automation/test_backend'
                 sh 'sh Neoload_Test_Automation/test_backend'
                 echo "Neoload-backend succesfully deployed !"
               }
@@ -58,7 +60,7 @@ pipeline {
                         --link nlweb-backend \
                         --interactive \
                         --name nlweb-frontend neotys/neoload-web-frontend:latest &> frontend.out & jobs'
-                sh '"TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat frontend.out | grep Started)\n sleep 1\ndone" > test_frontend'
+                sh 'cat Neoload_Test_Automation/test_frontend'
                 sh 'sh Neoload_Test_Automation/test_frontend'
                 echo "Neoload-frontend succesfully deployed !"
               }
