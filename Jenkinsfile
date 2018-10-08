@@ -21,11 +21,10 @@ pipeline {
             stage('Deploy mongo...') {
               steps {
                 sh 'nohup docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
-                sh 'while [[ $(cat mongo.out | grep started) = NULL ]] \
-                    do\
-                    sleep 1\
-                    done\
-                    echo "Mongo succesfully deployed !"'
+                sh 'echo -e "TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat mongo.out | grep Started)\n  echo $TEST\n  sleep 1\ndone" > test_mongo'
+                sh 'sh test_mongo'
+                echo "Mongo succesfully deployed !"
+
               }
             }
 
@@ -44,11 +43,9 @@ pipeline {
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
                       --name nlweb-backend neotys/neoload-web-backend:latest &> backend.out & jobs'
-                sh 'while [[ $(cat backend.out | grep started) = NULL ]] \
-                    do\
-                    sleep 1\
-                    done\
-                    echo "Neoload-backend succesfully deployed !"'
+                sh 'echo -e "TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat backend.out | grep Started)\n  echo $TEST\n  sleep 1\ndone" > test_backend'
+                sh 'sh test_backend'
+                echo "Neoload-backend succesfully deployed !"
               }
             }
 
@@ -61,11 +58,9 @@ pipeline {
                         --link nlweb-backend \
                         --interactive \
                         --name nlweb-frontend neotys/neoload-web-frontend:latest &> frontend.out & jobs'
-                sh 'while [[ $(cat frontend.out | grep started) = NULL ]] \
-                    do\
-                    sleep 1\
-                    done\
-                    echo "Neoload-frontend succesfully deployed !"'
+                sh 'echo -e "TEST=\nwhile \$(test \"\$TEST\" = \"\")\ndo\n  TEST=\$(cat frontend.out | grep Started)\n  echo $TEST\n  sleep 1\ndone" > test_frontend'
+                sh 'sh test_frontend'
+                echo "Neoload-frontend succesfully deployed !"
               }
             }
           }
