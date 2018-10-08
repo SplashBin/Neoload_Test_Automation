@@ -3,5 +3,6 @@ TEST=
 while $(test "$TEST" = "")
 do
   TEST=$(cat frontend.out | grep Started)
+  echo $TEST
   sleep 1
 done

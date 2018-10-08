@@ -2,6 +2,7 @@
 TEST=
 while $(test "$TEST" = "")
 do
-  TEST=$(cat backend.out | grep Started)
+  TEST=$(cat backend.out | grep Starting)
+  echo $TEST
   sleep 1
 done
