@@ -20,14 +20,18 @@ pipeline {
           parallel {
             stage('Deploy mongo...') {
               steps {
-                sh 'docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest'
-                echo 'Mongo deployed !'
+                sh 'nohup docker run --interactive --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest &> mongo.out & jobs'
+                sh 'while [[ $(cat mongo.out | grep started) = NULL ]] \
+                    do\
+                    sleep 1\
+                    done\
+                    echo "Mongo succesfully deployed !"'
               }
             }
 
             stage('Deploy neoload-backend...') {
               steps {
-                sh 'docker run --interactive --interactive -p 8080:1081 \
+                sh 'nohup docker run --interactive --interactive -p 8080:1081 \
                       --publish 8081:1082 \
                       --publish 9082:9092 \
                       --env MEMORY_MAX=1500m \
@@ -39,22 +43,29 @@ pipeline {
                       --env FILE_PROJECT_MAX_SIZE_IN_BYTES=100000000 \
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
-                      --name nlweb-backend neotys/neoload-web-backend:latest'
-                echo 'Neoload-backend deployed !'
+                      --name nlweb-backend neotys/neoload-web-backend:latest &> backend.out & jobs'
+                sh 'while [[ $(cat backend.out | grep started) = NULL ]] \
+                    do\
+                    sleep 1\
+                    done\
+                    echo "Neoload-backend succesfully deployed !"'
               }
             }
 
             stage('Deploy neoload-frontend...') {
               steps {
-                sh 'docker run --interactive -e MEMORY_MAX=896m \
+                sh 'nohup docker run --interactive -e MEMORY_MAX=896m \
                         -e SEND_USAGE_STATISTICS=true \
                         --publish 80:9090 \
                         --publish 81:9091 \
                         --link nlweb-backend \
                         --interactive \
-                        --name nlweb-frontend neotys/neoload-web-frontend:latest'
-                sh 'sleep 60'
-                echo 'Neoload-frontend deployed !'
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest &> frontend.out & jobs'
+                sh 'while [[ $(cat frontend.out | grep started) = NULL ]] \
+                    do\
+                    sleep 1\
+                    done\
+                    echo "Neoload-frontend succesfully deployed !"'
               }
             }
           }
