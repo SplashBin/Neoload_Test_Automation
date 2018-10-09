@@ -9,6 +9,7 @@ pipeline {
                 sh 'rm -rf Neoload_Test_Automation'
                 sh 'git clone https://github.com/SplashBin/Continuous_Testing.git'
                 sh 'git clone https://github.com/SplashBin/Neoload_Test_Automation.git'
+                sh 'rm -rf mongo.out backend.out frontend.out'
             }
         }
 
@@ -58,7 +59,7 @@ pipeline {
                         --publish 81:9091 \
                         --link nlweb-backend \
                         --interactive \
-                        --name nlweb-frontend neotys/neoload-web-frontend:latest'
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest > frontend.out & jobs'
                 echo "Neoload-frontend succesfully deployed !"
               }
             }
