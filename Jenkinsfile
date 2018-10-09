@@ -68,7 +68,7 @@ pipeline {
 
         stage('Deploy Nl Controller') {
             steps {
-                sh 'docker run --interactive --tty --name nl-controller neotys/neoload-controller'
+                sh 'docker run --interactive --name nl-controller neotys/neoload-controller'
             }
         }
     }
