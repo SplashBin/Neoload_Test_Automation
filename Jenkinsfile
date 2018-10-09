@@ -23,14 +23,13 @@ pipeline {
             stage('Deploy mongo...') {
               steps {
                 sh 'docker run --interactive -v /home/bench/data:/data/db --name mongo -p 27017 --hostname mongo mongo:latest > mongo.out & jobs'
-                sh 'sh Neoload_Test_Automation/test_mongo'
-                echo "Mongo succesfully deployed !"
-
               }
             }
 
             stage('Deploy neoload-backend...') {
               steps {
+                sh 'sh Neoload_Test_Automation/test_mongo'
+                echo "Mongo succesfully deployed !"
                 sh 'docker run --interactive --interactive -p 8080:1081 \
                       --publish 8081:1082 \
                       --publish 9082:9092 \
@@ -44,15 +43,14 @@ pipeline {
                       --env NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK=250 \
                       --link mongo \
                       --name nlweb-backend neotys/neoload-web-backend:latest > backend.out & jobs'
-                sh 'cat Neoload_Test_Automation/test_backend'
-                sh 'sh Neoload_Test_Automation/test_backend'
-                echo "Neoload-backend succesfully deployed !"
               }
             }
 
             stage('Deploy neoload-frontend...') {
               steps {
-                sh 'sleep 30'
+                sh 'cat Neoload_Test_Automation/test_backend'
+                sh 'sh Neoload_Test_Automation/test_backend'
+                echo "Neoload-backend succesfully deployed !"
                 sh 'docker run --interactive -e MEMORY_MAX=896m \
                         -e SEND_USAGE_STATISTICS=true \
                         --publish 80:9090 \
