@@ -2,7 +2,7 @@
 TEST=
 while $(test "$TEST" = "")
 do
-  TEST=$(cat frontend.out | grep org.eclipse.jetty.server.Server)
+  TEST=$(cat frontend.out | grep org.eclipse.jetty.server.Server[ ]-[ ]Started)
   echo $TEST
   sleep 1
 done
