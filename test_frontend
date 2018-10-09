@@ -3,6 +3,6 @@ TEST=
 while $(test "$TEST" = "")
 do
   TEST=$(cat frontend.out | grep org.eclipse.jetty.server.Server\ -\ Started)
-  cat frontend.out | echo
+  echo $(cat frontend.out)
   sleep 1
 done
