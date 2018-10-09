@@ -58,9 +58,7 @@ pipeline {
                         --publish 81:9091 \
                         --link nlweb-backend \
                         --interactive \
-                        --name nlweb-frontend neotys/neoload-web-frontend:latest > frontend.out & jobs'
-                sh 'ls'
-                sh 'sh Neoload_Test_Automation/test_frontend'
+                        --name nlweb-frontend neotys/neoload-web-frontend:latest'
                 echo "Neoload-frontend succesfully deployed !"
               }
             }
