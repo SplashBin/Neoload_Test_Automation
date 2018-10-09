@@ -69,9 +69,7 @@ pipeline {
 
         stage('Deploy Nl Controller') {
             steps {
-                sh 'curl https://d24mnm5myvorwj.cloudfront.net/documents/download/neoload/v6.6/neoload_6_6_0_linux_x64.sh > nl_installer.sh'
-                sh 'sh nl_installer.sh -q "/opt/neoload"'
-                sh 'cp Continuous_Testing/license.lic .neotys/neoload/v6.6/'
+                sh 'docker run --interactive --tty --name nl-controller neotys/neoload-controller'
             }
         }
     }
