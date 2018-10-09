@@ -52,6 +52,7 @@ pipeline {
 
             stage('Deploy neoload-frontend...') {
               steps {
+                sh 'sleep 30'
                 sh 'docker run --interactive -e MEMORY_MAX=896m \
                         -e SEND_USAGE_STATISTICS=true \
                         --publish 80:9090 \
