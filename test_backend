@@ -2,7 +2,7 @@
 TEST=
 while $(test "$TEST" = "")
 do
-  TEST=$(cat backend.out | grep Starting)
+  TEST=$(cat backend.out | grep BenchResultStmVerticle)
   echo $TEST
   sleep 1
 done
